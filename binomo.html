@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Binomo Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      color: #f7f7f7
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    .container {
+      width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f7f7f7;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .result-container {
+      margin-top: 20px;
+    }
+
+    .result-message {
+      margin-bottom: 10px;
+    }
+  </style>
+  <script>
+    const myValue = 500;
+    const percentage = 1.83;
+    const fivePercent = myValue * 0.05;
+    let total = myValue;
+    let gainMessage = '';
+    let operation = [25, 3];
+
+    const operar = (value = 5, times = 1, banking = myValue) => {
+      const gain = ((value * percentage) - value) * times;
+      let message = '';
+
+      if (times === 1) {
+        message = `${times} operação`;
+      } else if (times > 1) {
+        message = `${times} operações`;
+      } else {
+        return `O número de vezes (segundo argumento) é um valor inválido.`;
+      }
+
+      gainMessage = `Caso sua banca atual seja: R$ ${banking} e você opere e ganhe com sucesso ${message}, seu lucro será de R$ ${gain} o que lhe deixará com uma banca total de R$ ${total = banking + gain}!`;
+    };
+
+    const daysMessage = (days, type = 1) => {
+      const resultMessage = document.getElementById('result-message');
+      resultMessage.innerHTML = '';
+
+      switch (type) {
+        case 1:
+          for (let i = 0; i < days; i++) {
+            operar(...operation, total);
+            resultMessage.innerHTML += `<p>No dia ${i + 1} você terá uma banca total de: R$ ${total}</p>`;
+          }
+          break;
+        case 2:
+          operar(...operation, total);
+          resultMessage.innerHTML += `<p>${gainMessage}</p>`;
+          break;
+        case 3:
+          for (let i = 0; i < days; i++) {
+            operar(...operation, total);
+            resultMessage.innerHTML += `<p>No dia ${i + 1} você terá uma banca total de: R$ ${total} | ${gainMessage}</p>`;
+          }
+          break;
+      }
+    };
+
+    function calculate() {
+      const days = document.getElementById('days').value;
+      const type = document.getElementById('type').value;
+      const value = document.getElementById('value').value;
+      const times = document.getElementById('times').value;
+      const banking = document.getElementById('banking').value;
+
+      operation = [parseFloat(value), parseInt(times)];
+      total = parseFloat(banking);
+
+      daysMessage(parseInt(days), parseInt(type));
+    }
+  </script>
+</head>
+<body>
+  <h1>Binomo Calculator</h1>
+  <div class="container">
+    <div class="form-group">
+      <label for="days">Quantidade de Dias:</label>
+      <input type="number" id="days" min="1" value="7">
+    </div>
+    <div class="form-group">
+      <label for="type">Tipo de Mensagem:</label>
+      <select id="type">
+        <option value="1">Apenas Total</option>
+        <option value="2">Mensagem de Ganho</option>
+        <option value="3">Total e Mensagem de Ganho</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="value">Valor da Operação:</label>
+      <input type="number" id="value" value="25">
+    </div>
+    <div class="form-group">
+      <label for="times">Quantidade de Operações:</label>
+      <input type="number" id="times" value="3">
+    </div>
+    <div class="form-group">
+      <label for="banking">Banca Atual:</label>
+      <input type="number" id="banking" value="500">
+    </div>
+    <button onclick="calculate()">Calcular</button>
+    <div class="result-container">
+      <div id="result-message" class="result-message"></div>
+      <div id="gainMessage"></div>
+    </div>
+  </div>
+</body>
+</html>
